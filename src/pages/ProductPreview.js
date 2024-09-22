@@ -1,16 +1,32 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ProductData from "../helpers/ProductData";
 import Button from "../components/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
+import { useDispatch, useSelector } from "react-redux";
+import { bindActionCreators } from "redux";
+import { actionCreators } from "../state";
 
 function ProductPreview() {
   const [feature, setFeature] = useState("heartRate");
   const [selectedColorIndex, setSelectedColorIndex] = useState(0);
+  const [disable, setDisable] = useState(true);
 
   const updateFeature = (feature) => {
     setFeature(feature);
   };
+
+  const quantity = useSelector((state) => state.quantity);
+
+  const dispatch = useDispatch();
+  const { addQuantity, subtractQuantity } = bindActionCreators(
+    actionCreators,
+    dispatch
+  );
+
+  useEffect(() => {
+    setDisable(quantity === 0);
+  }, [quantity]);
 
   return (
     <div className="flex flex-col md:flex-row">
@@ -68,9 +84,32 @@ function ProductPreview() {
             onClick={() => updateFeature("heartRate")}
           />
         </div>
-        <button className="px-4 py-2 text-white bg-[#2D2F31] rounded-lg font-bold">
-          Buy Now
-        </button>
+        <div className="mb-4">
+          {disable ? (
+            <button
+              className="px-4 py-2 text-white bg-[#2D2F31] rounded-lg font-bold"
+              disabled
+              onClick={() => subtractQuantity(1)}
+            >
+              -
+            </button>
+          ) : (
+            <button
+              className="px-4 py-2 text-white bg-[#2D2F31] rounded-lg font-bold"
+              onClick={() => subtractQuantity(1)}
+            >
+              -
+            </button>
+          )}
+          <span className="px-5">Quantity ({quantity})</span>
+          <button
+            className="px-4 py-2 text-white bg-[#2D2F31] rounded-lg font-bold"
+            onClick={() => addQuantity(1)}
+          >
+            +
+          </button>
+          <br />
+        </div>
       </div>
     </div>
   );
