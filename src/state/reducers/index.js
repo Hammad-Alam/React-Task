@@ -1,8 +1,8 @@
 import { combineReducers } from "redux";
-import quantityReducer from "./quantityReducer";
+import cartReducer from "./cartReducer"; // Renamed from quantityReducer
 
 const reducers = combineReducers({
-  quantity: quantityReducer,
+  cart: cartReducer, // Updated key to match the new reducer name
 });
 
 export default reducers;

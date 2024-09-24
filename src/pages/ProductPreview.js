@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import ProductData from "../helpers/ProductData";
+import Heading from "../components/Heading";
 import Button from "../components/Button";
+import QuantityButton from "../components/QuantityButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,7 +18,7 @@ function ProductPreview() {
     setFeature(feature);
   };
 
-  const quantity = useSelector((state) => state.quantity);
+  const { quantity } = useSelector((state) => state.cart);
 
   const dispatch = useDispatch();
   const { addQuantity, subtractQuantity } = bindActionCreators(
@@ -60,7 +62,7 @@ function ProductPreview() {
           {ProductData.title}
         </h1>
         <p className="text-justify my-4 md:w-3/4">{ProductData.description}</p>
-        <h3 className="font-bold text-xl mb-4">Select Color</h3>
+        <Heading heading="Select Color" />
         <div className="grid grid-cols-2 md:grid-cols-4 md:mr-[200px] lg:mr-[300px]">
           {ProductData.colorOptions.map((colorOption, index) => (
             <img
@@ -76,7 +78,8 @@ function ProductPreview() {
             />
           ))}
         </div>
-        <h3 className="font-bold text-xl mb-4">Features</h3>
+        <Heading heading="Price: RS.6000" />
+        <Heading heading="Features" />
         <div className="space-x-5">
           <Button text="Time" onClick={() => updateFeature("time")} />
           <Button
@@ -86,28 +89,16 @@ function ProductPreview() {
         </div>
         <div className="mb-4">
           {disable ? (
-            <button
-              className="px-4 py-2 text-white bg-[#2D2F31] rounded-lg font-bold"
-              disabled
+            <QuantityButton
+              text="-"
               onClick={() => subtractQuantity(1)}
-            >
-              -
-            </button>
+              disabled={disable}
+            />
           ) : (
-            <button
-              className="px-4 py-2 text-white bg-[#2D2F31] rounded-lg font-bold"
-              onClick={() => subtractQuantity(1)}
-            >
-              -
-            </button>
+            <QuantityButton text="-" onClick={() => subtractQuantity(1)} />
           )}
           <span className="px-5">Quantity ({quantity})</span>
-          <button
-            className="px-4 py-2 text-white bg-[#2D2F31] rounded-lg font-bold"
-            onClick={() => addQuantity(1)}
-          >
-            +
-          </button>
+          <QuantityButton text="+" onClick={() => addQuantity(1)} />
           <br />
         </div>
       </div>

@@ -5,7 +5,7 @@ import ProductPreview from "./pages/ProductPreview";
 
 function App() {
   return (
-    <div className="App">
+    <div className="App select-none">
       <Navbar />
       <ProductPreview />
       <Footer />
